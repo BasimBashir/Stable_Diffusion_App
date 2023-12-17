@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>text2img Workspace</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/>
+    <!--Replace with your tailwind.css once created-->
+    <link href="https://unpkg.com/@tailwindcss/custom-forms/dist/custom-forms.min.css" rel="stylesheet" />
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+
+      html {
+        font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      }
+
+      input:checked ~ .dot {
+        transform: translateX(100%);
+        background-color: #48bb78;
+      }
+    </style>
+  </head>
+
+  <body class="leading-normal tracking-normal text-indigo-400 m-6 bg-cover bg-fixed" style="background-image: url('static/header.png');">
+    <div class="h-full">
+      <!--Nav-->
+      <div class="w-full container mx-auto">
+        <div class="w-full flex items-center justify-between">
+          <a class="flex items-center text-indigo-400 no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
+            Generative<span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">AI</span>
+          </a>
+
+          <div class="flex w-1/2 justify-end content-center">
+            <a class="inline-block text-blue-300 no-underline hover:text-pink-500 hover:text-underline text-center h-10 p-2 md:h-auto md:p-4 transform hover:scale-125 duration-300 ease-in-out" href="https://www.linkedin.com/in/basim-bashir-035403214?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
+              <svg class="fill-current h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                <path
+                  d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                ></path>
+              </svg>
+            </a>
+            <a
+              class="inline-block text-blue-300 no-underline hover:text-pink-500 hover:text-underline text-center h-10 p-2 md:h-auto md:p-4 transform hover:scale-125 duration-300 ease-in-out"
+              href="https://github.com/BasimBashir"
+            >
+              <svg class="fill-current h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!--Main-->
+      <div class="container pt-24 md:pt-36 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+        <!--Left Col-->
+        <div class="flex flex-col w-full xl:w-2/5 justify-center lg:items-start overflow-y-hidden">
+          <h1 class="my-4 text-3xl md:text-5xl text-white opacity-75 font-bold leading-tight text-center md:text-left">
+            Unleash your creativity with
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
+              AI-powered
+            </span>
+            art generation!
+          </h1>
+          <p class="leading-normal text-base md:text-2xl mb-8 text-center md:text-left">
+            Create stunning digital artworks in seconds. Just type a prompt and let the AI do the rest. Generate anything from landscapes and portraits to abstract art.
+          </p>
+
+          <form class="bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
+            <div class="mb-4">
+              <label class="block text-blue-300 py-2 font-bold mb-2" for="prompt-input">
+                Enter your Prompt:
+              </label>
+              <input
+                class="shadow appearance-none border rounded w-full p-3 text-gray-700 leading-tight focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                id="prompt-input"
+                type="text"
+                placeholder="Write your Prompt here..."
+              />
+            </div>
+
+            <div class="mb-4">
+              <label class="block text-blue-300 py-2 font-bold mb-2" for="negative-prompt-input">
+                Enter Negative Prompt (Optional):
+              </label>
+              <input
+                style="border: none; border-bottom: 1px solid #ddd;  outline: none; padding: 3px; transition: border-bottom-color 0.3s; width: 100%; border-bottom-color: #007bff;"
+                id="negative-prompt-input"
+                type="text"
+                placeholder="ugly, bad, immature, cartoon, anime, 3d, painting..."
+              />
+            </div>
+
+            <div class="flex items-center justify-between pt-4">
+              <button
+                class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                type="button"
+                onclick="sendPrompt()"
+              >
+                Send
+              </button>
+
+              <label for="toggle" class="flex items-center cursor-pointer">
+                <div class="mr-2 text-gray-700 font-medium">
+                  Fast mode
+                </div>
+                <!-- toggle -->
+                <div class="relative">
+                  <!-- input -->
+                  <input id="toggle" type="checkbox" class="sr-only" />
+                  <!-- line -->
+                  <div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+                  <!-- dot -->
+                  <div class="dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition"></div>
+                </div>
+                <!-- label -->
+                <div class="ml-3 text-gray-700 font-medium">
+                  Quality mode
+                </div>
+              </label>
+            </div>
+            <label for="steps-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" style="margin-top: 10px">Sampling Steps</label>
+            <input id="steps-range" type="range" min="1" max="10" value="2" step="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+          </form>
+            <div class="flex items-center justify-between pt-4">
+              <button
+                class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                type="button"
+                id="download-button"
+              >
+                Download
+              </button>
+            </div>
+        </div>
+
+
+
+        <!--Image Col-->
+        <div class="w-full xl:w-3/5 p-12 overflow-hidden">
+          <img id="Changing_Image" class="mx-auto w-full md:w-4/5 transform -rotate-6 transition hover:scale-105 duration-700 ease-in-out hover:rotate-6" src="static/macbook.svg"  alt="static/macbook.svg"/>
+        </div>
+
+        <div class="mx-auto md:pt-16">
+          <p class="text-blue-400 font-bold pb-8 lg:pb-6 text-center">
+            Try other Models:
+          </p>
+          <div class="flex w-full justify-center md:justify-start pb-24 lg:pb-0 fade-in">
+              <a href="{{ url_for('img2img') }}">
+                 <img src="static/Image2image.png" class="h-12 pr-12 transform hover:scale-125 duration-300 ease-in-out" alt="static/App Store.svg" width="300" height="20"/>
+              </a>
+              <a href="{{ url_for('text2video') }}">
+                <img src="static/Text2Video.png" class="h-12 transform hover:scale-125 duration-300 ease-in-out"  alt="static/Play Store.svg"  width="270" height="20"/>
+              </a>
+          </div>
+        </div>
+
+        <!--Footer-->
+        <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in">
+          <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; App 2023</a>
+          - Copyrighted by
+          <a class="text-gray-500 no-underline hover:no-underline" href="#">zfsports.net</a>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+
+    let inferedSteps = 2;
+
+    document.getElementById("steps-range").addEventListener("input", (e) => {
+      inferedSteps = e.target.value;
+    });
+
+    let toggleState = "off";
+
+    document.getElementById("toggle").addEventListener("click", () => {
+      toggleState = document.getElementById("toggle").checked ? "on" : "off";
+
+      if(toggleState === "on") {
+        document.getElementById("steps-range").min = 10;
+        document.getElementById("steps-range").max = 100;
+        document.getElementById("steps-range").step = 10;
+        document.getElementById("steps-range").value = 40;
+      } else {
+        document.getElementById("steps-range").min = 1;
+        document.getElementById("steps-range").max = 10;
+        document.getElementById("steps-range").step = 1;
+        document.getElementById("steps-range").value = 2;
+      }
+    });
+
+    // Add overlay with processing spinner
+    function showProcessing() {
+
+      // Create overlay
+      var overlay = document.createElement("div");
+      overlay.classList.add("fixed", "inset-0", "bg-opacity-75", "flex", "items-center", "justify-center");
+
+      // Create spinner
+      var spinner = document.createElement("div");
+      spinner.classList.add("animate-spin", "rounded-full", "h-32", "w-32", "border-t-8", "border-b-8", "border-red-500");
+
+      // Append spinner to overlay
+      overlay.appendChild(spinner);
+
+      // Append overlay to document body
+      document.body.appendChild(overlay);
+
+    }
+
+    // Remove overlay
+    function hideProcessing() {
+
+      var overlay = document.querySelector(".fixed.inset-0");
+      overlay.remove();
+
+    }
+    function sendPrompt() {
+      showProcessing();
+      var prompt = document.getElementById("prompt-input").value;
+      var negative_prompt = document.getElementById("negative-prompt-input").value;
+      // Send toggleState and steps value
+      let inferedSteps = document.getElementById("steps-range").value;
+
+      fetch("/generate_text2img", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          prompt: prompt,
+          negative_prompt: negative_prompt,
+          toggleState: toggleState,
+          inferenceSteps: inferedSteps
+        })
+      })
+      .then(response => {
+        hideProcessing();
+        console.log("new image sending")
+        // update image on success
+        var timestamp = new Date().getTime();
+        document.getElementById("Changing_Image").src = "static/images/generated_image.png?" + timestamp;
+      });
+    }
+
+    document.getElementById("download-button").addEventListener("click", () => {
+      window.location.href = "/download_text2image";
+    });
+  </script>
+</html>
