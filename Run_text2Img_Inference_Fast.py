@@ -1,10 +1,10 @@
 import torch
-from diffusers import AutoPipelineForText2Image, AutoPipelineForImage2Image
+from diffusers import AutoPipelineForText2Image
 import random
 import os
 
 
-model_weights = "StableDiffusion models\SDXL_weights"
+model_weights = "StableDiffusion models/SDXL_weights"
 
 if not os.path.exists(model_weights):
     os.makedirs(model_weights)
@@ -34,6 +34,7 @@ def generate_text2image_fast(prompt, negative_prompt=None, inference_steps: int 
     else:
         outputs = image_generator(
             prompt=prompt,
+            negative_prompt="bad anatomy, bad proportions, blurry, cloned face, cropped, deformed, dehydrated, disfigured, duplicate, error, extra arms, extra fingers, extra legs, extra limbs, fused fingers, gross proportions, jpeg artifacts, long neck, low quality, lowres, malformed limbs, missing arms, missing legs, morbid, mutated hands, mutation, mutilated, out of frame, poorly drawn face, poorly drawn hands, signature, text, too many fingers, ugly, username, watermark, worst quality",           
             num_inference_steps=inference_steps,
             guidance_scale=guidance_scale,
             generator=generator,

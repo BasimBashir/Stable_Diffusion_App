@@ -18,6 +18,19 @@
       html {
         font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
       }
+
+      #preview {
+        position: relative;
+        overflow: hidden;
+      }
+
+      #preview img {
+        transition: transform 0.3s ease-in-out;
+      }
+
+      #preview:hover img {
+        transform: scale(1.2); /* Adjust the scaling factor as needed */
+      }
     </style>
   </head>
 
@@ -79,6 +92,36 @@
               <input type="file" id="fileInput" multiple style="display:none;" />
             </div>
 
+            <div class="mb-4 flex flex-wrap justify-between">
+
+              <div class="w-1/2 sm:w-1/4 mb-2">
+                <input type="checkbox" id="checkbox1" class="checkbox">
+                <label for="checkbox1" class="text-gray-300">Canny</label>
+              </div>
+            
+              <div class="w-1/2 sm:w-1/4 mb-2"> 
+                <input type="checkbox" id="checkbox2" class="checkbox">
+                <label for="checkbox2" class="text-gray-300">Depth</label>
+              </div>
+            
+              <div class="w-1/2 sm:w-1/4 mb-2">
+                <input type="checkbox" id="checkbox3" class="checkbox">
+                <label for="checkbox3" class="text-gray-300">Segmentation</label>  
+              </div>
+            
+            </div>
+
+            <div id="preview" class="w-full"></div>
+
+            <div class="mb-4" id="phrases-container" style="display: none;">
+              <label class="block text-blue-300 py-2 font-bold mb-2" for="phrases-dropdown">
+                  Select Object to Replace with our AI:
+              </label>
+              <select multiple id="phrases-dropdown" class="w-full p-3 border rounded text-gray-700 leading-tight focus:ring transform transition hover:scale-105 duration-300 ease-in-out">
+                  <!-- Add options dynamically using JavaScript -->
+              </select>
+            </div>
+
             <div class="mb-4">
               <label class="block text-blue-300 py-2 font-bold mb-2" for="prompt-input">
                 Enter your Prompt:
@@ -100,8 +143,18 @@
                 Send to Model
               </button>
             </div>
-            <label for="steps-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" style="margin-top: 10px">Sampling Steps</label>
-            <input id="steps-range" type="range" min="0.1" max="1.0" value="0.7" step="0.1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+
+            <div class="mt-5">
+              <label class="block text-blue-300 py-2 font-bold mb-2" style="font-family: 'Pacifico', cursive; font-size: 18px; text-shadow: 1px 1px 2px rgb(39, 34, 132);">
+                Processing Steps
+              </label>
+    
+              <div class="relative">
+                <input id="steps-range" type="range" min="0" max="500" value="20" step="20" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+                <div class="absolute top-0 right-0 px-2 py-1 text-xs text-gray-700 bg-gray-100 rounded-sm" id="steps-value"></div>
+              </div>
+            </div>
+
           </form>
             <div class="flex items-center justify-between pt-4">
               <button
@@ -114,11 +167,9 @@
             </div>
         </div>
 
-
-
         <!--Image Col-->
         <div class="w-full xl:w-3/5 p-12 overflow-hidden">
-          <img id="Changing_Image" class="mx-auto w-full md:w-4/5 transform -rotate-6 transition hover:scale-105 duration-700 ease-in-out hover:rotate-6" src="static/macbook.svg"  alt="static/macbook.svg"/>
+          <img id="Changing_Image" class="mx-auto w-full md:w-4/5 transform -rotate-6 transition hover:scale-105 duration-700 ease-in-out hover:rotate-6" src="static/macbook.svg"  style="width:480px; height:640px;" alt="static/macbook.svg"/>
         </div>
 
         <div class="mx-auto md:pt-16">
@@ -137,16 +188,31 @@
 
         <!--Footer-->
         <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in">
-          <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; App 2023</a>
+          <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; App 2024</a>
           - Copyrighted by
-          <a class="text-gray-500 no-underline hover:no-underline" href="#">zfsports.net</a>
+          <a class="text-gray-500 no-underline hover:no-underline" href="#">OuterAspect IP Ltd.</a>
         </div>
       </div>
     </div>
   </body>
   <script>
 
-    let strength = 0.7;
+    const range = document.getElementById("steps-range");
+    const valueDisplay = document.getElementById("steps-value");
+
+    range.addEventListener("input", () => {
+      valueDisplay.innerText = range.value;  
+    });
+
+    range.addEventListener("mouseover", () => {
+      valueDisplay.style.display = "block";
+    });
+
+    range.addEventListener("mouseout", () => {  
+      valueDisplay.style.display = "none";
+    });
+
+    let strength = 20;
 
     document.getElementById("steps-range").addEventListener("input", (e) => {
       strength = e.target.value;
@@ -178,9 +244,25 @@
       overlay.remove();
 
     }
+
+    function getSelectedPhrases() {
+      var selectedPhrases = [];
+      var phrasesDropdown = document.getElementById("phrases-dropdown");
+
+      // Iterate through the options and add selected phrases to the array
+      for (var i = 0; i < phrasesDropdown.options.length; i++) {
+        if (phrasesDropdown.options[i].selected) {
+          selectedPhrases.push(phrasesDropdown.options[i].text);
+        }
+      }
+
+      return selectedPhrases;
+    }
+
     function sendPrompt() {
       showProcessing();
       var prompt = document.getElementById("prompt-input").value;
+      var selectedPhrases = getSelectedPhrases();
 
       fetch("/generate_img2img", {
         method: "POST",
@@ -189,7 +271,8 @@
         },
         body: JSON.stringify({
           prompt: prompt,
-          strength: strength
+          strength: strength,
+          phrases: selectedPhrases
         })
       })
       .then(response => {
@@ -242,18 +325,52 @@
       dropZone.classList.remove('bg-gray-400');
     }
 
+    // Checkboxes
+    const checkboxes = document.querySelectorAll('.checkbox');
+
     function handleFiles(files) {
+
+      // Validate checkbox selected
+      if(!Array.from(checkboxes).some(x => x.checked)) {
+
+        alert('Please select an option before uploading');
+        
+        // Refresh page
+        window.location.reload(); 
+        return;
+      }
+
       const img = fileInput.files;
 
       // Upload image
       uploadImage(img[0]);
     }
 
-    function uploadImage(img) {
-      // Upload img to server
+    function getPhrases() {
+      
+      fetch('/get_phrases')
+        .then(res => res.json())
+        .then(data => {
+          updatePhrases(data);
+      });
+    }
 
+    let selectedOption = ''; // Add a variable to track the selected option globally
+
+    function uploadImage(img) {
+
+      showProcessing();
+      
+      // Upload img to server
       let formData = new FormData();
+
+      // Get selected checkbox label
+      const selectedCheckbox = Array.from(checkboxes).find(x => x.checked);
+      selectedOption = selectedCheckbox ? 
+        selectedCheckbox.nextElementSibling.textContent : '';
+
       formData.append('image', img);
+      formData.append('option', selectedOption);
 
       fetch('/upload', {
         method: 'POST',
@@ -261,7 +378,99 @@
       })
       .then(res => {
         console.log('Image uploaded!');
+
+        // Display uploaded image
+        displayImageFromPath();
+        
+        getPhrases(); // call on page load
+        hideProcessing();
       })
     }
+
+    function displayImageFromPath() {
+      const preview = document.getElementById('preview');
+
+      // Create a new Image element
+      const uploadedImage = new Image();
+      
+      // Set the source to the desired path
+      uploadedImage.src = 'static/ControlNet_Image/controlImage.png';
+
+      uploadedImage.onload = () => {
+        const aspectRatio = uploadedImage.width / uploadedImage.height;
+        const targetWidth = 256;
+        const targetHeight = 256;
+
+        uploadedImage.width = targetWidth;
+        uploadedImage.height = targetHeight;
+
+        uploadedImage.classList.add('max-w-full', 'h-auto');
+
+        // Clear previous content and append the resized image
+        preview.innerHTML = '';
+        preview.appendChild(uploadedImage);
+
+        // Show the phrases container only if "Segmentation" is selected
+        const phrasesContainer = document.getElementById('phrases-container');
+        console.log('Selected Option:', selectedOption); 
+        if (selectedOption === 'Segmentation') {
+          phrasesContainer.style.display = 'block';
+        } else {
+          phrasesContainer.style.display = 'none';
+        }
+      };
+    }
+
+    function updatePhrases(phrasesData) {
+      phrases = phrasesData.phrases;
+      populatePhrasesDropdown(phrases);
+    }
+
+    // Function to populate the phrases dropdown
+    function populatePhrasesDropdown(phrases) {
+      const phrasesDropdown = document.getElementById('phrases-dropdown');
+
+      // Clear existing options
+      phrasesDropdown.innerHTML = '';
+
+      // Populate dropdown with phrases as options
+      phrases.forEach((phrase, index) => {
+          const option = document.createElement('option');
+          option.value = index.toString(); // Set the value to the index
+          option.text = phrase;
+          phrasesDropdown.appendChild(option);
+      });
+    }
+
+    document.getElementById('preview').addEventListener('mouseover', function (e) {
+      // Create an enlarged image element
+      var enlargedImage = document.createElement('img');
+      enlargedImage.src = e.target.src; // Set the source to the original image
+      enlargedImage.classList.add('enlarged-image');
+
+      // Append the enlarged image to the body
+      document.body.appendChild(enlargedImage);
+
+      // Handle mousemove to update the position
+      document.addEventListener('mousemove', function (e) {
+        // Position the enlarged image based on the mouse position with a pop-out effect
+        var offsetX = 20; // Adjust this value to control the pop-out distance
+        var offsetY = 20; // Adjust this value to control the pop-out distance
+        enlargedImage.style.left = e.pageX + offsetX + 'px';
+        enlargedImage.style.top = e.pageY + offsetY + 'px';
+      });
+    });
+
+    document.getElementById('preview').addEventListener('mouseout', function () {
+      // Remove the enlarged image on mouseout
+      var enlargedImage = document.querySelector('.enlarged-image');
+      if (enlargedImage) {
+        enlargedImage.remove();
+      }
+
+      // Remove the mousemove event listener
+      document.removeEventListener('mousemove', function () {});
+    });
+
   </script>
 </html>

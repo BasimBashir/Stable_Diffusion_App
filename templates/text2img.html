@@ -123,8 +123,20 @@
                 </div>
               </label>
             </div>
-            <label for="steps-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" style="margin-top: 10px">Sampling Steps</label>
-            <input id="steps-range" type="range" min="1" max="10" value="2" step="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+            <!-- <label for="steps-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" style="margin-top: 10px">Sampling Steps</label>
+            <input id="steps-range" type="range" min="1" max="10" value="2" step="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"> -->
+
+            <div class="mt-5">
+              <label class="block text-blue-300 py-2 font-bold mb-2" style="font-family: 'Pacifico', cursive; font-size: 18px; text-shadow: 1px 1px 2px rgb(39, 34, 132);">
+                Sampling Steps
+              </label>
+    
+              <div class="relative">
+                <input id="steps-range" type="range" min="1" max="10" value="2" step="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+                <div class="absolute top-0 right-0 px-2 py-1 text-xs text-gray-700 bg-gray-100 rounded-sm" id="steps-value"></div>
+              </div>
+            </div>
+
           </form>
             <div class="flex items-center justify-between pt-4">
               <button
@@ -150,7 +162,7 @@
           </p>
           <div class="flex w-full justify-center md:justify-start pb-24 lg:pb-0 fade-in">
               <a href="{{ url_for('img2img') }}">
-                 <img src="static/Image2image.png" class="h-12 pr-12 transform hover:scale-125 duration-300 ease-in-out" alt="static/App Store.svg" width="300" height="20"/>
+                 <img src="static/img2img.png" class="h-12 pr-12 transform hover:scale-125 duration-300 ease-in-out" alt="static/img2img.png" width="300" height="20"/>
               </a>
               <a href="{{ url_for('text2video') }}">
                 <img src="static/Text2Video.png" class="h-12 transform hover:scale-125 duration-300 ease-in-out"  alt="static/Play Store.svg"  width="270" height="20"/>
@@ -160,14 +172,29 @@
 
         <!--Footer-->
         <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in">
-          <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; App 2023</a>
+          <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; App 2024</a>
           - Copyrighted by
-          <a class="text-gray-500 no-underline hover:no-underline" href="#">zfsports.net</a>
+          <a class="text-gray-500 no-underline hover:no-underline" href="#">OuterAspect IP Ltd.</a>
         </div>
       </div>
     </div>
   </body>
   <script>
+
+    const range = document.getElementById("steps-range");
+    const valueDisplay = document.getElementById("steps-value");
+
+    range.addEventListener("input", () => {
+      valueDisplay.innerText = range.value;  
+    });
+
+    range.addEventListener("mouseover", () => {
+      valueDisplay.style.display = "block";
+    });
+
+    range.addEventListener("mouseout", () => {  
+      valueDisplay.style.display = "none";
+    });
 
     let inferedSteps = 2;
 

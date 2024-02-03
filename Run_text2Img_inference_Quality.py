@@ -3,8 +3,8 @@ import torch
 import os
 
 
-base_model_weights = "StableDiffusion models\SDXL_Base_model"
-refiner_model_weights = "StableDiffusion models\SDXL_Refiner_model"
+base_model_weights = "StableDiffusion models/SDXL_Base_model"
+refiner_model_weights = "StableDiffusion models/SDXL_Refiner_model"
 
 if not (os.path.exists(base_model_weights) and os.path.exists(refiner_model_weights)):
 
@@ -59,6 +59,7 @@ def generate_text2image_quality(prompt, negative_prompt=None, inference_steps: i
         ).images
         image = refiner(
             prompt=prompt,
+            negative_prompt=negative_prompt,
             num_inference_steps=inference_steps,
             denoising_start=high_noise_frac,
             image=image,
@@ -67,15 +68,27 @@ def generate_text2image_quality(prompt, negative_prompt=None, inference_steps: i
         # run both experts
         image = base(
             prompt=prompt,
+            negative_prompt="bad anatomy, bad proportions, blurry, cloned face, cropped, deformed, dehydrated, disfigured, duplicate, error, extra arms, extra fingers, extra legs, extra limbs, fused fingers, gross proportions, jpeg artifacts, long neck, low quality, lowres, malformed limbs, missing arms, missing legs, morbid, mutated hands, mutation, mutilated, out of frame, poorly drawn face, poorly drawn hands, signature, text, too many fingers, ugly, username, watermark, worst quality",
             num_inference_steps=inference_steps,
             denoising_end=high_noise_frac,
             output_type="latent",
         ).images
         image = refiner(
             prompt=prompt,
+            negative_prompt="bad anatomy, bad proportions, blurry, cloned face, cropped, deformed, dehydrated, disfigured, duplicate, error, extra arms, extra fingers, extra legs, extra limbs, fused fingers, gross proportions, jpeg artifacts, long neck, low quality, lowres, malformed limbs, missing arms, missing legs, morbid, mutated hands, mutation, mutilated, out of frame, poorly drawn face, poorly drawn hands, signature, text, too many fingers, ugly, username, watermark, worst quality",
             num_inference_steps=inference_steps,
             denoising_start=high_noise_frac,
             image=image,
         ).images[0]
 
     return image
+
+
+# if __name__ == "__main__":
+#     base = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0", torch_dtype=torch.float16, variant="fp16", use_safetensors=True)
+#     base.to("cuda")
+#     refiner = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-refiner-1.0", text_encoder_2=base.text_encoder_2, vae=base.vae, torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
+#     refiner.to("cuda")
+
+#     base.save_pretrained(base_model_weights)
+#     refiner.save_pretrained(refiner_model_weights)
